@@ -12,12 +12,12 @@ const Review = new Schema({
         type: String
     },
     Title: {
-        type: String,
-        default: '',
+        type: String
+        // default: '',
     },
     Body: {
         type: String,
-        default: '',
+        // default: ''
     },
     DateCreated: {
         type: Date,

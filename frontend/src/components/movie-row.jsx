@@ -69,7 +69,7 @@ export default function MovieRow(props) {
             scrollable.current.scrollLeft += offset;
         }
     }
-
+    
     // set scroll function for row
     function setScroll(offset) {
         if (scrollable.current) {

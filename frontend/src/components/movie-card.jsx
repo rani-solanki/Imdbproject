@@ -21,7 +21,6 @@ export default function MovieCard(props) {
             ) {
                 setLiked(true);
             }
-
             if (
                 user.currentUser.Saved.find((item) => item == props.movie._id)
             ) {
@@ -29,7 +28,7 @@ export default function MovieCard(props) {
             }
         }
     }, [user]);
-
+    
     // onclick redirect to movie page
     function cardOnClick() {
         history.push('/movie/' + props.movie._id);

@@ -3,15 +3,13 @@ import React, { useState, useEffect } from 'react';
 import { setInStorage } from '../utils/storage';
 import { useHistory } from 'react-router-dom';
 import { CSSTransition } from 'react-transition-group';
-
 import { useSelector, useDispatch } from 'react-redux';
 import { setUser } from '../actions';
-
 import checkedIcon from '../assets/img/checked.png';
 
 export default function Login(props) {
-    const [name, setName] = useState('');
-    const [username, setUsername] = useState('');
+    const [name, setname] = useState('');
+    const [email, setemail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState(''); // error message
     const [register, setMode] = useState(false); // register or login
@@ -23,9 +21,7 @@ export default function Login(props) {
     const [passMin, setPassMin] = useState(false);
     const [passNum, setPassNum] = useState(false);
     const [passCapital, setPassCapital] = useState(false);
-
     const [buttonEnabled, setButtonEnabled] = useState(false); // submit button state
-
     const user = useSelector((state) => state.userReducer);
     const history = useHistory();
 
@@ -50,22 +46,23 @@ export default function Login(props) {
             history.goBack();
         }
     }
-
     // sign up request
     function signUpRequest() {
         setLoading(true);
         // Post request to backend
         axios({
             method: 'post',
-            url: '/api/use/signin',
+            url: '/api/user/signin',
             headers: {
                 'Content-Type': 'application/json',
             },
+
             data: JSON.stringify({
                 name: name,
-                username: username,
+                email: email,
                 password: password,
             }),
+
         }).then((res) => {
             if (res.data.success) {
                 // write token to storage
@@ -76,6 +73,7 @@ export default function Login(props) {
                 // dispatch user to redux and redirect
                 dispatch(setUser(res.data.user));
                 setTimeout(redirect, 1700);
+                
             } else {
                 setError(res.data.message);
             }
@@ -89,12 +87,12 @@ export default function Login(props) {
         // Post request to backend
         axios({
             method: 'post',
-            url: '/account/login',
+            url: '/api/auth/login',
             headers: {
                 'Content-Type': 'application/json',
             },
             data: JSON.stringify({
-                username: username,
+                email: email,
                 password: password,
             }),
         }).then((res) => {
@@ -117,23 +115,22 @@ export default function Login(props) {
 
     // username requirements
     function validUsername() {
-        if (username.length >= 6 && username.length <= 14) {
+        if (email.length >= 14 &&email.length <= 28) {
             return (
                 <div className='d-flex justify-content-between'>
-                    <label>Username</label>
+                    <label>email</label>
                     <small className='text-success'>6-14 characters</small>
                 </div>
             );
         } else {
             return (
                 <div className='d-flex justify-content-between'>
-                    <label>Username</label>
+                    <label>email</label>
                     <small className='text-danger'>6-14 characters</small>
                 </div>
             );
         }
     }
-
     // function to update password requirements in realtime
     function validPassword(pass) {
         if (regex.length.test(pass)) {
@@ -153,7 +150,6 @@ export default function Login(props) {
         } else {
             setPassCapital(false);
         }
-
         if (
             regex.length.test(pass) &&
             regex.digit.test(pass) &&
@@ -164,21 +160,20 @@ export default function Login(props) {
             setButtonEnabled(false);
         }
     }
-
     // sign in container
     function signInContainer() {
         return (
             <form className='container rounded p-4 pt-5 text-white h-100 d-flex flex-column justify-content-between'>
                 <div>
                     <div class='form-group'>
-                        <label>Username</label>
+                        <label>email</label>
                         <input
                             name='username'
                             type='text'
                             class='form-control'
                             placeholder='Enter username'
-                            value={username}
-                            onChange={(e) => setUsername(e.target.value)}
+                            value={email}
+                            onChange={(e) => setemail(e.target.value)}
                         />
                     </div>
                     <div class='form-group'>
@@ -237,7 +232,7 @@ export default function Login(props) {
                         placeholder='Enter name'
                         value={name}
                         maxLength='35'
-                        onChange={(e) => setName(e.target.value)}
+                        onChange={(e) => setname(e.target.value)}
                     />
                 </div>
                 <div class='form-group'>
@@ -247,8 +242,8 @@ export default function Login(props) {
                         type='text'
                         class='form-control'
                         placeholder='Enter username'
-                        value={username}
-                        onChange={(e) => setUsername(e.target.value)}
+                        value={email}
+                        onChange={(e) => setemail(e.target.value)}
                     />
                 </div>
                 <div class='form-group'>

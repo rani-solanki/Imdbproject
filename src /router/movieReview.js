@@ -5,7 +5,6 @@ const Movie = require('../models/movieSchema');
 router.post('/reviews', async (req, res) => {
     try {
         const { Movie, Source, Ratings } = req.body;
-        
         const review = new Review({
             Movie,
             Source,
@@ -13,7 +12,7 @@ router.post('/reviews', async (req, res) => {
         });
         
         await review.save();
-        reviews = await Review.find(req.review)
+        reviews = await Review.findOne(req.review)
 
         if (reviews) {
             return res.status(400).json({"Review":reviews})

@@ -40,7 +40,6 @@ export default function MoviePage(props) {
             }
         }
     }, [props._id]);
-
     useEffect(() => {
         // set document title
         if (movie) {
@@ -62,7 +61,7 @@ export default function MoviePage(props) {
             }
         }
     }, [movie, user, props._id]);
-
+    
     function saveClick() {
         let params = {};
 
